@@ -1,0 +1,29 @@
+name: 'load-variables'
+description: >
+  load variables from json format file, path to be defined with inputs
+  loaded variables will be exposed as output
+inputs:
+  config-path:
+    description: >
+      The path to the config file to be loaded as variables
+    default: "./.github/vars.json"
+    required: true
+outputs:
+  vars:
+    description: >-
+      loaded variables content in json format
+    value: ${{ steps.load-vars.outputs.vars }}
+runs:
+  using: "composite"
+  steps:
+    - name: load variables
+      id: load-vars
+      run: |
+        content=`cat ${{ inputs.config-path }}`
+        # the following lines are only required for multi line json
+        content="${content//'%'/'%25'}"
+        content="${content//$'\n'/'%0A'}"
+        content="${content//$'\r'/'%0D'}"
+        # end of optional handling for multi line json
+        echo "::set-output name=vars::$content"
+      shell: bash
