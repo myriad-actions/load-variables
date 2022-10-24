@@ -25,5 +25,5 @@ runs:
         # content="${content//$'\n'/'%0A'}"
         # content="${content//$'\r'/'%0D'}"
         # end of optional handling for multi line json
-        echo "::set-output name=vars::$content"
+        echo "vars=$content"  >> $GITHUB_OUTPUT
       shell: bash
